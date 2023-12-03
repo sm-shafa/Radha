@@ -23,7 +23,14 @@ public class BookController : ControllerBase
     public async Task<ActionResult<BookCheckDto>> GetCalculationBook(GetPenaltyBusinessDayModel request,
         CancellationToken cancellationToken)
     {
-        var result = await _bookService.Calculate(request.CheckedOutDate, request.CheckedInDate, request.CountryId);
-        return result;
+        try
+        {
+            var result = await _bookService.Calculate(request.CheckedOutDate, request.CheckedInDate, request.CountryId);
+            return result;
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e);
+        }
     }
 }

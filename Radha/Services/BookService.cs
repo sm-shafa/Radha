@@ -12,11 +12,14 @@ public class BookService : IBookService
         _unitOfRepository = unitOfRepository;
     }
 
-    public async Task<BookCheckDto> Calculate(DateTime checkout, DateTime checkin, int countryId)
+    public async Task<BookCheckDto> Calculate(DateTime checkout, DateTime returnDate, int countryId)
     {
+        if (returnDate > checkout)
+            throw new Exception("checkout date must be less than returnDate");
+
         BookCheckDto penaltyDayDto = new BookCheckDto();
         int businessDays =
-            await CalculateBusinessDays(DateOnly.FromDateTime(checkout), DateOnly.FromDateTime(checkin), countryId);
+            await CalculateBusinessDays(DateOnly.FromDateTime(checkout), DateOnly.FromDateTime(returnDate), countryId);
         decimal penalty = await CalculatePenalty(businessDays, countryId);
         var country = await _unitOfRepository.Countries.GetCountry(countryId);
 
@@ -49,10 +52,11 @@ public class BookService : IBookService
 
     private async Task<decimal> CalculatePenalty(int businessDays, int countryId)
     {
-        var country = await _unitOfRepository.Countries.GetCountry(countryId);
-        string currencyCode = country.CurrencySign;
-        decimal penaltyAmount = businessDays * 5.00m;
-        string penaltyFormatted = currencyCode + penaltyAmount.ToString("F2");
+        decimal penaltyAmount = 0;
+        if (businessDays > 10)
+        {
+            penaltyAmount = (businessDays - 10) * 5.00m;
+        }
 
         return penaltyAmount;
     }

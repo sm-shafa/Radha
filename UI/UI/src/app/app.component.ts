@@ -26,6 +26,8 @@ export class AppComponent {
 
     this.bookService.getCalculationBook(model).toPromise().then((result) => {
       this.bookCalculation = result;
+    }).catch((e)=> {
+      console.log(e);
     });
   }
 }
