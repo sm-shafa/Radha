@@ -16,7 +16,7 @@ public class BookService : IBookService
     {
         if (returnDate > checkout)
             throw new Exception("checkout date must be less than returnDate");
-
+        
         BookCheckDto penaltyDayDto = new BookCheckDto();
         int businessDays =
             await CalculateBusinessDays(DateOnly.FromDateTime(checkout), DateOnly.FromDateTime(returnDate), countryId);

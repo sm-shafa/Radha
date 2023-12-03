@@ -20,6 +20,11 @@ export class AppComponent {
 
   public calculate(): void  {
     this.error = '';
+    if (!this.countryId || !this.checkIn || !this.checkOut) {
+      this.error = 'Fill inputs';
+      return;
+    }
+
     const model: ICalculationBookQuery = {
       countryId: this.countryId,
       checkedInDate: this.checkIn,
