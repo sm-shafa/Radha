@@ -19,6 +19,7 @@ export class AppComponent {
 
 
   public calculate(): void  {
+    this.error = '';
     const model: ICalculationBookQuery = {
       countryId: this.countryId,
       checkedInDate: this.checkIn,
