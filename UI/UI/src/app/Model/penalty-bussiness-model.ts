@@ -1,5 +1,5 @@
-﻿export interface IPenaltyBussinessQuery {
-  DateCheckedOut: Date,
-  DateCheckedIn: Date,
-  CountryId: number,
+﻿export interface ICalculationBookQuery {
+  checkedOutDate: Date,
+  checkedInDate: Date,
+  countryId: number,
 }

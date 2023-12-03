@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {IPenaltyBussinessQuery} from "../models/penalty-bussiness-model";
 import {map} from "rxjs/operators";
 import {Observable} from "rxjs";
 import {environment} from "../../environments/environment";
+import {ICalculationBookQuery} from "../Model/penalty-bussiness-model";
 
 @Injectable({
   providedIn: 'root'
@@ -17,10 +17,10 @@ export class BookService {
 
   }
 
-  public getPenaltyBussiness(body: IPenaltyBussinessQuery): Observable<any> {
+  public getCalculationBook(body: ICalculationBookQuery): Observable<any> {
     const headers = {'content-type': 'application/json'}
     const data = JSON.stringify(body);
-    return this.http.post(`${this.apiUrl}Book/GetPenaltyBussinessDay`, data, {'headers':headers}).pipe(map((result) => {
+    return this.http.post(`${this.apiUrl}Book/GetICalculationBookQuery`, data, {'headers':headers}).pipe(map((result) => {
         return result;
       })
     );

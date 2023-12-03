@@ -2,7 +2,7 @@
 
 public class GetPenaltyBusinessDayModel
 {
-    public DateTime DateCheckedOut { get; set; }
-    public DateTime DateCheckedIn { get; set; }
+    public DateTime CheckedOutDate { get; set; }
+    public DateTime CheckedInDate { get; set; }
     public int CountryId { get; set; }
 }
