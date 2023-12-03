@@ -8,20 +8,21 @@
     </select>
     <button (click)="calculate()">Calculate</button>
 
-    <table>
-      <thead>
-      <tr>
-        <th>Penalty</th>
-        <th>Day</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr>
-        <td>{{this.bookCalculation.penalty}}{{this.bookCalculation.currencySign}}</td>
-        <td>{{this.bookCalculation.bussinessDays}}</td>
-      </tr>
-      </tbody>
-    </table>
-
+    <div *ngIf="this.bookCalculation">
+      <table border="1">
+        <thead>
+        <tr>
+          <th>Penalty</th>
+          <th>Day</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>{{this.bookCalculation.penalty}}{{this.bookCalculation.currencySign}}</td>
+          <td>{{this.bookCalculation.businessDays}}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </form>

@@ -20,7 +20,7 @@ export class BookService {
   public getCalculationBook(body: ICalculationBookQuery): Observable<any> {
     const headers = {'content-type': 'application/json'}
     const data = JSON.stringify(body);
-    return this.http.post(`${this.apiUrl}Book/GetICalculationBookQuery`, data, {'headers':headers}).pipe(map((result) => {
+    return this.http.post(`${this.apiUrl}Book/GetCalculationBook`, data, {'headers':headers}).pipe(map((result) => {
         return result;
       })
     );

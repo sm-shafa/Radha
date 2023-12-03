@@ -26,8 +26,16 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
+
+app.UseCors(builder =>
+{
+    builder //.WithOrigins("https://localhost:port")
+        .SetIsOriginAllowed(_ => true)
+        .AllowAnyMethod()
+        .AllowAnyHeader()
+        .AllowCredentials();
+});
 
 app.MapControllers();
 
