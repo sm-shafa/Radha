@@ -12,6 +12,7 @@ export class AppComponent {
   public checkOut: Date;
   public countryId: any;
   public bookCalculation: any;
+  public error: string;
 
   constructor(private bookService: BookService) {
   }
@@ -27,7 +28,8 @@ export class AppComponent {
     this.bookService.getCalculationBook(model).toPromise().then((result) => {
       this.bookCalculation = result;
     }).catch((e)=> {
-      console.log(e);
+      console.log(e.error);
+      this.error = e.error;
     });
   }
 }

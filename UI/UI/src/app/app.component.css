@@ -1,0 +1,6 @@
+.error-container {
+  border: 1px red solid;
+  border-radius: 4px;
+  background-color: antiquewhite;
+  margin-top: 10px;
+}
