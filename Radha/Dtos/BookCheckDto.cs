@@ -1,8 +1,8 @@
 ﻿namespace Radha.Dtos;
 
-public class PenaltyBusinessDayDto
+public class BookCheckDto
 {
-    public PenaltyBusinessDayDto()
+    public BookCheckDto()
     {
     }
 

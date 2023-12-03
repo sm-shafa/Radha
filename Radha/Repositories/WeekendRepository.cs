@@ -17,8 +17,18 @@ public class WeekendRepository: IWeekendRepository
         var query = "SELECT * FROM Weekend WHERE Id = @Id";
         using (var connection = _context.CreateConnection())
         {
-            var Weekend = await connection.QuerySingleOrDefaultAsync<Weekend>(query, new { id });
-            return Weekend;
+            var weekend = await connection.QuerySingleOrDefaultAsync<Weekend>(query, new { id });
+            return weekend;
+        }
+    }
+
+    public async Task<IEnumerable<Weekend>> GetCountryWeekend(int countryId)
+    {
+        var query = "SELECT * FROM Weekend WHERE countryId = @countryId";
+        using (var connection = _context.CreateConnection())
+        {
+            var weekend = await connection.QueryAsync<Weekend>(query, new { countryId });
+            return weekend.ToList();
         }
     }
 }

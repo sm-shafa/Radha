@@ -21,4 +21,14 @@ public class HolidayRepository: IHolidayRepository
             return holiday;
         }
     }
+
+    public async Task<IEnumerable<Holiday>> GetCountryHoliday(int countryId)
+    {
+        var query = "SELECT * FROM Holidays WHERE countryId = @countryId";
+        using (var connection = _context.CreateConnection())
+        {
+            var holiday = await connection.QueryAsync<Holiday>(query, new { countryId });
+            return holiday.ToList();
+        }
+    }
 }

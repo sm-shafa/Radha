@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Radha.Dtos;
 using Radha.Models;
+using Radha.Services;
 
 namespace Radha.Controllers;
 
@@ -9,19 +10,20 @@ namespace Radha.Controllers;
 [ApiController]
 public class BookController : ControllerBase
 {
-    public BookController()
+    private readonly IBookService _bookService;
+    
+    public BookController(IBookService bookService)
     {
+        this._bookService = bookService;
     }
 
     [AllowAnonymous]
     [HttpPost]
     [Route("GetCalculationBook")]
-    public async Task<ActionResult<PenaltyBusinessDayDto>> GetCalculationBook(GetPenaltyBusinessDayModel request,
+    public async Task<ActionResult<BookCheckDto>> GetCalculationBook(GetPenaltyBusinessDayModel request,
         CancellationToken cancellationToken)
     {
-        // var result = await _mediator.Send(request, cancellationToken);
-        //
-        // return Ok(result);
-        // return Ok(result);
+        var result = await _bookService.Calculate(request.CheckedOutDate, request.CheckedInDate, request.CountryId);
+        return result;
     }
 }

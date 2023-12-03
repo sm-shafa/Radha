@@ -5,4 +5,5 @@ namespace Radha.Repositories;
 public interface IWeekendRepository
 {
     public Task<Weekend> GetWeekend(int id);
+    public Task<IEnumerable<Weekend>> GetCountryWeekend(int countryId);
 }
