@@ -1,0 +1,13 @@
+<form name="book">
+  <div>
+    <input name="checkin" [(ngModel)]="checkin" type="date">
+    <input name="checkout" [(ngModel)]="checkout" type="date">
+    <select name="country" [(ngModel)]="country">
+      <option value="1">Iran</option>
+      <option value="2">Turkey</option>
+    </select>
+    <button (click)="calculate()">Calculate</button>
+
+    Result: Panalty: {{this.result.penalty}}{{this.result.currencySign}} || Bussiness Day: {{this.result.bussinessDays}}
+  </div>
+</form>
