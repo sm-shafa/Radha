@@ -4,5 +4,5 @@ namespace Radha.Services;
 
 public interface IBookService
 {
-     Task<BookCheckDto> Calculate(DateTime checkout, DateTime checkin, int countryId);
+     Task<BookCheckDto> Calculate(DateTime checkout, DateTime returnDate, int countryId);
 }

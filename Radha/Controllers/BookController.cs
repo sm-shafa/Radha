@@ -25,7 +25,7 @@ public class BookController : ControllerBase
     {
         try
         {
-            var result = await _bookService.Calculate(request.CheckedOutDate, request.CheckedInDate, request.CountryId);
+            var result = await _bookService.Calculate(request.CheckedOutDate, request.ReturnDate, request.CountryId);
             return result;
         }
         catch (Exception e)

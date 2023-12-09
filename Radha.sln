@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Radha", "Radha\Radha.csproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UI", "UI\UI.csproj", "{379A6D7C-71C5-4654-9F50-B527F883CA71}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProject1", "TestProject1\TestProject1.csproj", "{0275FED3-5CFA-48E4-ADDE-938407A05625}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{379A6D7C-71C5-4654-9F50-B527F883CA71}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{379A6D7C-71C5-4654-9F50-B527F883CA71}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{379A6D7C-71C5-4654-9F50-B527F883CA71}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0275FED3-5CFA-48E4-ADDE-938407A05625}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0275FED3-5CFA-48E4-ADDE-938407A05625}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0275FED3-5CFA-48E4-ADDE-938407A05625}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0275FED3-5CFA-48E4-ADDE-938407A05625}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

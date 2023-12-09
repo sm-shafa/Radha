@@ -1,5 +1,5 @@
 ﻿export interface ICalculationBookQuery {
   checkedOutDate: Date,
-  checkedInDate: Date,
+  returnDate: Date,
   countryId: number,
 }

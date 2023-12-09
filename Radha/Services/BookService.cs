@@ -14,13 +14,13 @@ public class BookService : IBookService
 
     public async Task<BookCheckDto> Calculate(DateTime checkout, DateTime returnDate, int countryId)
     {
-        if (returnDate > checkout)
-            throw new Exception("checkout date must be less than returnDate");
+        if (returnDate < checkout)
+            throw new Exception("returnDate must be greater than checkout date");
         
         BookCheckDto penaltyDayDto = new BookCheckDto();
         int businessDays =
             await CalculateBusinessDays(DateOnly.FromDateTime(checkout), DateOnly.FromDateTime(returnDate), countryId);
-        decimal penalty = await CalculatePenalty(businessDays, countryId);
+        decimal penalty = await CalculatePenalty(businessDays);
         var country = await _unitOfRepository.Countries.GetCountry(countryId);
 
         penaltyDayDto.Penalty = penalty;
@@ -29,7 +29,7 @@ public class BookService : IBookService
         return penaltyDayDto;
     }
 
-    private async Task<int> CalculateBusinessDays(DateOnly dateCheckedOut, DateOnly dateCheckedIn, int countryId)
+    private async Task<int> CalculateBusinessDays(DateOnly dateCheckedOut, DateOnly dateReturn, int countryId)
     {
         var holiday = await _unitOfRepository.Holidays.GetCountryHoliday(countryId);
         var weekendDay = await _unitOfRepository.Weekends.GetCountryWeekend(countryId);
@@ -38,7 +38,7 @@ public class BookService : IBookService
         var weekendDays = weekendDay.ToList().Select(w => w.Day);
 
         int businessDays = 0;
-        for (DateOnly date = dateCheckedIn; date <= dateCheckedOut; date = date.AddDays(1))
+        for (DateOnly date = dateCheckedOut; date <= dateReturn; date = date.AddDays(1))
         {
             if (!weekendDays.Contains(date.DayOfWeek.ToString()) && !holidays.Contains(date))
             {
@@ -50,7 +50,7 @@ public class BookService : IBookService
     }
 
 
-    private async Task<decimal> CalculatePenalty(int businessDays, int countryId)
+    private async Task<decimal> CalculatePenalty(int businessDays)
     {
         decimal penaltyAmount = 0;
         if (businessDays > 10)
