@@ -28,8 +28,72 @@ public class BookServiceTests
         var expectedBusinessDays = 10;
         var expectedCurrencySign = "$";
 
-        _mockUnitOfRepository.Setup(x => x.Countries.GetCountry(countryId)).ReturnsAsync(new Country { CurrencySign = "$" });
+        _mockUnitOfRepository.Setup(x => x.Countries.GetCountry(countryId))
+            .ReturnsAsync(new Country {CurrencySign = "$"});
         _mockUnitOfRepository.Setup(x => x.Holidays.GetCountryHoliday(countryId)).ReturnsAsync(new List<Holiday>());
+        _mockUnitOfRepository.Setup(x => x.Weekends.GetCountryWeekend(countryId)).ReturnsAsync(new List<Weekend>());
+
+        // Act
+        var result = await _bookService.Calculate(checkout, returnDate, countryId);
+
+        // Assert
+        Assert.Equal(expectedPenalty, result.Penalty);
+        Assert.Equal(expectedBusinessDays, result.BusinessDays);
+        Assert.Equal(expectedCurrencySign, result.CurrencySign);
+    }
+
+    [Fact]
+    public async Task Calculate_ReturnsExpectedPenaltyResult()
+    {
+        // Arrange
+        var checkout = new DateTime(2022, 1, 1);
+        var returnDate = new DateTime(2022, 1, 13);
+        var countryId = 1;
+        var expectedPenalty = 15.00m;
+        var expectedBusinessDays = 13;
+        var expectedCurrencySign = "$";
+
+        _mockUnitOfRepository.Setup(x => x.Countries.GetCountry(countryId))
+            .ReturnsAsync(new Country {CurrencySign = "$"});
+        _mockUnitOfRepository.Setup(x => x.Holidays.GetCountryHoliday(countryId)).ReturnsAsync(new List<Holiday>());
+        _mockUnitOfRepository.Setup(x => x.Weekends.GetCountryWeekend(countryId)).ReturnsAsync(new List<Weekend>());
+
+        // Act
+        var result = await _bookService.Calculate(checkout, returnDate, countryId);
+
+        // Assert
+        Assert.Equal(expectedPenalty, result.Penalty);
+        Assert.Equal(expectedBusinessDays, result.BusinessDays);
+        Assert.Equal(expectedCurrencySign, result.CurrencySign);
+    }
+
+    [Fact]
+    public async Task Calculate_ReturnsExpectedWithHolidayResult()
+    {
+        // Arrange
+        var checkout = new DateTime(2022, 1, 1);
+        var returnDate = new DateTime(2022, 1, 13);
+        var countryId = 1;
+        var expectedPenalty = 5.00m;
+        var expectedBusinessDays = 11;
+        var expectedCurrencySign = "$";
+        List<Holiday> holidays = new List<Holiday>()
+        {
+            new Holiday()
+            {
+                Id = 1, Country = new Country() {Id = 1, CurrencySign = "$", Name = "Iran"}, CountryId = 1,
+                Date = new DateTime(2022, 1, 10), Event = "Holiday"
+            },
+            new Holiday()
+            {
+                Id = 2, Country = new Country() {Id = 1, CurrencySign = "$", Name = "Iran"}, CountryId = 1,
+                Date = new DateTime(2022, 1, 11), Event = "Holiday"
+            }
+        };
+
+        _mockUnitOfRepository.Setup(x => x.Countries.GetCountry(countryId))
+            .ReturnsAsync(new Country {CurrencySign = "$"});
+        _mockUnitOfRepository.Setup(x => x.Holidays.GetCountryHoliday(countryId)).ReturnsAsync(holidays);
         _mockUnitOfRepository.Setup(x => x.Weekends.GetCountryWeekend(countryId)).ReturnsAsync(new List<Weekend>());
 
         // Act
@@ -42,19 +106,28 @@ public class BookServiceTests
     }
     
     [Fact]
-    public async Task Calculate_ReturnsExpectedPenaltyResult()
+    public async Task Calculate_ReturnsExpectedWithWeekendsResult()
     {
         // Arrange
         var checkout = new DateTime(2022, 1, 1);
         var returnDate = new DateTime(2022, 1, 13);
         var countryId = 1;
-        var expectedPenalty = 15.00m;
-        var expectedBusinessDays = 13;
+        var expectedPenalty = 10.00m;
+        var expectedBusinessDays = 12;
         var expectedCurrencySign = "$";
+        List<Weekend> weekends = new List<Weekend>()
+        {
+            new Weekend()
+            {
+                Id = 1, Country = new Country() {Id = 1, CurrencySign = "$", Name = "Iran"}, CountryId = 1,
+                Day = "Friday"
+            }
+        };
 
-        _mockUnitOfRepository.Setup(x => x.Countries.GetCountry(countryId)).ReturnsAsync(new Country { CurrencySign = "$" });
+        _mockUnitOfRepository.Setup(x => x.Countries.GetCountry(countryId))
+            .ReturnsAsync(new Country {CurrencySign = "$"});
         _mockUnitOfRepository.Setup(x => x.Holidays.GetCountryHoliday(countryId)).ReturnsAsync(new List<Holiday>());
-        _mockUnitOfRepository.Setup(x => x.Weekends.GetCountryWeekend(countryId)).ReturnsAsync(new List<Weekend>());
+        _mockUnitOfRepository.Setup(x => x.Weekends.GetCountryWeekend(countryId)).ReturnsAsync(weekends);
 
         // Act
         var result = await _bookService.Calculate(checkout, returnDate, countryId);
@@ -73,48 +146,12 @@ public class BookServiceTests
         var returnDate = new DateTime(2022, 1, 1);
         var countryId = 1;
 
-        _mockUnitOfRepository.Setup(x => x.Countries.GetCountry(countryId)).ReturnsAsync(new Country { CurrencySign = "$" });
+        _mockUnitOfRepository.Setup(x => x.Countries.GetCountry(countryId))
+            .ReturnsAsync(new Country {CurrencySign = "$"});
         _mockUnitOfRepository.Setup(x => x.Holidays.GetCountryHoliday(countryId)).ReturnsAsync(new List<Holiday>());
         _mockUnitOfRepository.Setup(x => x.Weekends.GetCountryWeekend(countryId)).ReturnsAsync(new List<Weekend>());
 
         // Act & Assert
         await Assert.ThrowsAsync<Exception>(() => _bookService.Calculate(checkout, returnDate, countryId));
     }
-
-    // [Fact]
-    // public async Task CalculateBusinessDays_ReturnsExpectedResult()
-    // {
-    //     // Arrange
-    //     var dateCheckedOut = new DateOnly(2022, 1, 1);
-    //     var dateCheckedIn = new DateOnly(2022, 1, 10);
-    //     var countryId = 1;
-    //     var expectedBusinessDays = 9;
-    //
-    //     _mockUnitOfRepository.Setup(x => x.Holidays.GetCountryHoliday(countryId)).ReturnsAsync(new List<Holiday>());
-    //     _mockUnitOfRepository.Setup(x => x.Weekends.GetCountryWeekend(countryId)).ReturnsAsync(new List<Weekend>());
-    //
-    //     // Act
-    //     var result = await _bookService.CalculateBusinessDays(dateCheckedOut, dateCheckedIn, countryId);
-    //
-    //     // Assert
-    //     Assert.Equal(expectedBusinessDays, result);
-    // }
-
-    // [Fact]
-    // public async Task CalculatePenalty_ReturnsExpectedResult()
-    // {
-    //     // Arrange
-    //     var businessDays = 10;
-    //     var countryId = 1;
-    //     var expectedPenalty = 0m;
-    //
-    //     _mockUnitOfRepository.Setup(x => x.Holidays.GetCountryHoliday(countryId)).ReturnsAsync(new List<Holiday>());
-    //     _mockUnitOfRepository.Setup(x => x.Weekends.GetCountryWeekend(countryId)).ReturnsAsync(new List<Weekend>());
-    //
-    //     // Act
-    //     var result = await _bookService.CalculatePenalty(businessDays, countryId);
-    //
-    //     // Assert
-    //     Assert.Equal(expectedPenalty, result);
-    // }
 }
